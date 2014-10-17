@@ -1,6 +1,7 @@
 https://www.akamai.com
 https://www.reddit.com
 https://www.google.com
+https://www.yahoo.com
 https://duckduckgo.com
 https://www.gmail.com
 https://www.github.com
