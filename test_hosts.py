@@ -9,16 +9,41 @@ global tls1
 global ssl2
 global ssl3
 
-hosts = open('hosts.txt','r')
+opts = sys.argv[1:]
 vers = [3,2,1]
-
-
 tls1 = []
 ssl2 = []
 ssl3 = []
-
 threads = []
 threads_done = False
+hosts = False
+
+def show_help():
+    print """
+=====================================================================
+ Quickly scan a list of hosts for various TLS and SSL compatibility.
+=====================================================================
+
+-h, --help:	Display this message
+
+Usage:
+------------------------------
+ $ ./test_hosts.py HOSTS
+
+Example:
+------------------------------
+ $ ./test_hosts.py example_hosts.txt
+
+"""
+
+if len(opts) <= 0:
+    show_help()
+else:
+    for opt in opts:
+        if (opt == '-h') or (opt == '--help'):
+            show_help()
+            quit()
+    hosts = open(opts[0],'r')
 
 def test_host(a_host):
     a_host = a_host.rstrip()
@@ -41,9 +66,7 @@ def test_host(a_host):
         except:
             pass
 
-
 print '\nTESTING HOSTS...'
-
 for a_host in hosts:
     print a_host,
     t = threading.Thread(target=test_host,args=(a_host,))
@@ -60,14 +83,12 @@ while threads_done == False:
 
 
 print '\n\nRESULTS:\n\n'
-
 if len(tls1):
    print "+ TLSv1 ENABLED HOSTS:"
    print "+----------------------------"
    for a_host in tls1:
        print "|- "+a_host
    print "+----------------------------\n\n"
-
 
 if len(ssl2):
    print "+ SSLv2 ENABLED HOSTS:"
